@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "BasicInfoTableViewCell.setButtonTitle(title:):BasicInfoTableViewCell.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UIColor(hex: &quot;FF6265&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
