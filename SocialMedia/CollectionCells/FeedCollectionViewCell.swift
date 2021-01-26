@@ -1,9 +1,4 @@
-//
-//  FeedCollectionViewCell.swift
-//  SocialMedia
-//
-//  Created by Darko Spasovski on 12/2/20.
-//
+
 
 import UIKit
 import Kingfisher

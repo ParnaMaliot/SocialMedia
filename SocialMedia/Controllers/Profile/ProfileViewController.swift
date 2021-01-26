@@ -1,16 +1,10 @@
-//
-//  ProfileViewController.swift
-//  SocialMedia
-//
-//  Created by Darko Spasovski on 11/16/20.
-//
 
 import UIKit
 import Kingfisher
 import CoreServices
 import SwiftPhotoGallery
 
-enum ProfileViewTableData {
+enum ProfileViewTableData: Equatable {
     case basicInfo
     case aboutMe
     case stats
@@ -41,7 +35,24 @@ enum ProfileViewTableData {
             return 0
         }
     }
+    
+    static func == (lhs: ProfileViewTableData, rhs: ProfileViewTableData) -> Bool {
+        switch (lhs, rhs) {
+        case (.basicInfo, .basicInfo):
+            return true
+        case (.aboutMe, .aboutMe):
+            return true
+        case (.myMoments, .myMoments):
+            return true
+        case (.stats, .stats):
+            return true
+        default:
+            return false
+        }
+    }
 }
+
+
 
 class ProfileViewController: UIViewController {
 
@@ -77,8 +88,6 @@ class ProfileViewController: UIViewController {
         button.setTitle(nil, for: .normal)
         button.addTarget(self, action: #selector(onEditProfile), for: .touchUpInside)
         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: button)]
-        
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
     }
     
     private func setupTableView() {
@@ -165,6 +174,16 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 }
 
 extension ProfileViewController: BasicInfoCellDelegate {
+    func reloadFollowCount() {
+        
+        if let index = tableData.firstIndex(of: .stats) {
+            tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+        }
+//        if let index = tableData.index(where: {$0 == .stats}) {
+//
+//        }
+    }
+    
     func didClickOnEditImage() {
         openEditImageSheet()
     }
@@ -271,9 +290,7 @@ extension ProfileViewController: StatsTableCellFollowersDelegate, StatsTableCell
         let controller = storyBoard.instantiateViewController(identifier: "FollowsViewController") as! FollowsViewController
         navigationController?.pushViewController(controller, animated: true)
     }
-    
 
-    
     func didClickOnFollowing() {
         let storyBoard = UIStoryboard(name: "Home", bundle: nil)
         let controller = storyBoard.instantiateViewController(identifier: "FollowingViewController") as! FollowingViewController
@@ -281,7 +298,4 @@ extension ProfileViewController: StatsTableCellFollowersDelegate, StatsTableCell
         controller.following = following
         navigationController?.pushViewController(controller, animated: true)
     }
-    
-
-    
 }

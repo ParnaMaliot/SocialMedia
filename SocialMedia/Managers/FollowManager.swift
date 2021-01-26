@@ -29,4 +29,29 @@ class FollowManager {
             }
         }
     }
+    
+    func followUser(user: User, completion: @escaping(_ sucess: Bool, _ error: Error?) -> Void) {
+        DataStore.shared.followUser(user: user) {(following, error) in
+            if let following = following {
+                self.following.append(following)
+                completion(true, nil)
+                return
+            }
+            if let error = error {
+                completion(false, error)
+            }
+        }
+    }
+    
+    func unfollowUser(user: User, completion: @escaping(_ sucess: Bool, _ error: Error?) -> Void) {
+        guard let following = following.first(where: {$0.userId == user.id}), let followingId = following.id else {return}
+        DataStore.shared.unfollow(followingId: followingId) { (success, error) in
+            if success {
+                self.following.removeAll(where: {$0.id == followingId})
+                completion(true, error)
+                return
+            }
+            completion(false, error)
+        }
+    }
 }

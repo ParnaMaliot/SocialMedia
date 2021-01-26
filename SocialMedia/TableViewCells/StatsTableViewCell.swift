@@ -1,9 +1,4 @@
-//
-//  StatsTableViewCell.swift
-//  SocialMedia
-//
-//  Created by Darko Spasovski on 11/18/20.
-//
+
 
 import UIKit
 

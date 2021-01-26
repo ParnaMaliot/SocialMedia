@@ -1,9 +1,4 @@
-//
-//  UserInfoTableViewCell.swift
-//  SocialMedia
-//
-//  Created by Darko Spasovski on 14.12.20.
-//
+
 
 import UIKit
 import Kingfisher

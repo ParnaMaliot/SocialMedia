@@ -1,9 +1,4 @@
-//
-//  LoadingCollectionViewCell.swift
-//  SocialMedia
-//
-//  Created by Darko Spasovski on 25.12.20.
-//
+
 
 import UIKit
 import SnapKit

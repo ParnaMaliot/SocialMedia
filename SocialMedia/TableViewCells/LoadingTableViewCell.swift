@@ -1,9 +1,4 @@
-//
-//  LoadingTableViewCell.swift
-//  SocialMedia
-//
-//  Created by Darko Spasovski on 21.12.20.
-//
+
 
 import UIKit
 

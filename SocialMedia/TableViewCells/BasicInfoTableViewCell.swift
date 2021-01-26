@@ -1,9 +1,4 @@
-//
-//  BasicInfoTableViewCell.swift
-//  SocialMedia
-//
-//  Created by Darko Spasovski on 11/16/20.
-//
+
 
 import UIKit
 import Kingfisher
@@ -11,10 +6,11 @@ import Kingfisher
 protocol BasicInfoCellDelegate: class {
     func didClickOnEditImage()
     func didTapOnUserImage(user: User?, image: UIImage?)
+    func reloadFollowCount()
 }
 
 class BasicInfoTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblOtherInfo: UILabel!
@@ -34,7 +30,7 @@ class BasicInfoTableViewCell: UITableViewCell {
         profileImage.layer.cornerRadius = 28
         profileImage.layer.masksToBounds = true        
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
@@ -63,9 +59,8 @@ class BasicInfoTableViewCell: UITableViewCell {
         } else {
             btnFollow.isHidden = true
         }
-        
     }
- 
+    
     @IBAction func onEditImage(_ sender: UIButton) {
         if let user = user, user.id == DataStore.shared.localUser?.id {
             delegate?.didClickOnEditImage()
@@ -73,7 +68,6 @@ class BasicInfoTableViewCell: UITableViewCell {
             delegate?.didTapOnUserImage(user: user, image: profileImage.image)
         }
     }
-    
     
     func setButtonTitle(title: String) {
         btnFollow.setTitle(title, for: .normal)
@@ -84,19 +78,40 @@ class BasicInfoTableViewCell: UITableViewCell {
             btnFollow.setTitleColor(UIColor(named: "MainPink"), for: .normal)
             btnFollow.backgroundColor = UIColor(hex: "FF6265").withAlphaComponent(0.2)
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.delegate?.reloadFollowCount()
+        }
     }
-    
     
     @IBAction func onFollow(_ sender: UIButton) {
         guard let user = user else { return }
-        DataStore.shared.followUser(user: user) { (success, error) in
+        if FollowManager.shared.following.contains(where: {$0.userId == user.id}) {
+            unfollowUser(user)
+            return
+        }
+        followUser(user)
+    }
+    
+    func followUser(_ user: User) {
+        FollowManager.shared.followUser(user: user) { (success, error) in
             if let error = error {
                 print(error.localizedDescription)
                 return
             }
-            
             if success {
                 self.setButtonTitle(title: "Following")
+            }
+        }
+    }
+    
+    func unfollowUser(_ user: User) {
+        FollowManager.shared.unfollowUser(user: user) { (success, error) in
+            if let error  = error {
+                print(error.localizedDescription)
+                return
+            }
+            if success {
+                self.setButtonTitle(title: "Follow")
             }
         }
     }
